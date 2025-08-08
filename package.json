@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.28.2",
+    "@fingerprintjs/botd": "^1.9.1",
     "@grpc/grpc-js": "^1.13.4",
     "axios": "^1.11.0",
     "bootstrap": "^5.2.3",

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './bitex.css';
 import Ds from './Ds';
 import {BrowserRouter as Router} from 'react-router-dom';
+import Botd from '@fingerprintjs/botd';
 import {Routes, Route} from "react-router-dom";
 import Luivuson from './serco/Luivuson';
 import Rickerson from './serco/Rickerson';

